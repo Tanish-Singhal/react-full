@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "./components/Card";
 import Shimmer from "./components/Shimmer";
+import Appbar from "./components/Appbar";
 
 const App = () => {
   const [listOfData, setListOfData] = useState([]);
@@ -47,6 +48,8 @@ const App = () => {
 
   return (
     <div className="App">
+      <Appbar wholeData={listOfData} setWholeData={setCopyData} />
+
       <button
         onClick={handleFilterLogic}
         className="m-2 p-2 bg-blue-500 text-white rounded"
