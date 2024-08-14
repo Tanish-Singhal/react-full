@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Card from "./components/Card";
+import Shimmer from "./components/Shimmer";
 
 const App = () => {
   const [listOfData, setListOfData] = useState([]);
   const [copyData, setCopyData] = useState([]);
   const [btnName, setBtnName] = useState("Apply Filter");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -23,6 +25,8 @@ const App = () => {
       setCopyData(restaurants);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,6 +40,10 @@ const App = () => {
       setCopyData(listOfData);
     }
   };
+
+  if (isLoading) {
+    return <Shimmer />;
+  }
 
   return (
     <div className="App">
