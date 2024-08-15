@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./components/Card";
 import Shimmer from "./components/Shimmer";
 import Appbar from "./components/Appbar";
+import { Link } from "react-router-dom";
 
 const App = () => {
   const [listOfData, setListOfData] = useState([]);
@@ -59,7 +60,9 @@ const App = () => {
 
       <div className="flex flex-wrap gap-4 p-4">
         {copyData.map((res) => (
-          <Card resData={res} key={res.info.id} />
+          <Link key={res.info.id} to={"/restaurants/" + res.info.id}>
+            <Card resData={res} key={res.info.id} />
+          </Link>
         ))}
       </div>
     </div>

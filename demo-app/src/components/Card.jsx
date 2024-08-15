@@ -1,6 +1,6 @@
 const Card = ({ resData }) => {
   return (
-    <div className="flex m-2 p-2 border w-72">
+    <div className="flex m-2 p-2 border w-72 text-white">
       <div>
         <img
           src={
