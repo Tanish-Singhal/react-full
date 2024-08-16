@@ -22,49 +22,101 @@
 - Parent ComponentDidMount
 */
 
-
-
-import React from "react"
+import React from "react";
 
 class ClassUser extends React.Component {
   constructor(props) {
-    super(props);     // this is used for props
+    super(props); // this is used for props
 
     this.state = {
       count: 0,
-      count2: 2
-    }
+      count2: 2,
+      userInfo: "",
+    };
 
     console.log("Child Constructor");
   }
 
-  // componentDidMount is used to make API call 
-  componentDidMount() {
-    console.log("Child Component Did Mount");  
+  // componentDidMount is used to make API call
+  async componentDidMount() {
+    console.log("Child Component Did Mount");
+
+    const data = await fetch("https://api.github.com/users/Tanish-Singhal");
+    const json = await data.json();
+
+    this.setState({
+      userInfo: json,
+    });
+  }
+
+  componentDidUpdate() {
+    console.log("Child Component Did Update");
+  }
+
+  componentWillUnmount() {
+    console.log("Child Component Will Unmount");
   }
 
   render() {
     console.log("Child Render");
 
     return (
-      <div className='flex justify-center items-center border-2 border-lime-500 w-60'>
-        Class Based Components
-        <br />
-        ({this.props.type}, {this.props.random})
-        <br />
-        Count: {this.state.count}
-        <br />
-        Count2: {this.state.count2}
-        <br />
-        <button onClick={() => {
-          this.setState({
-            count: this.state.count + 1,
-            count2: this.state.count2 + 2,
-          })
-        }}>Click me</button>
+      <div className="flex flex-col justify-center items-center border-2 border-lime-500 w-60 p-4">
+        <div>
+          Class Based Components
+          <br />
+          ({this.props.type}, {this.props.random})
+        </div>
+
+        <div>
+          Count: {this.state.count}
+          <br />
+          Count2: {this.state.count2}
+        </div>
+
+        <div>
+          <button
+            onClick={() => {
+              this.setState({
+                count: this.state.count + 1,
+                count2: this.state.count2 + 2,
+              });
+            }}
+          >
+            Click me
+          </button>
+        </div>
+
+        <div className="text-center mt-4">
+          <img
+            src={this.state.userInfo.avatar_url}
+            alt="User Avatar"
+            className="mb-2"
+          />
+          <h1>{this.state.userInfo.name}</h1>
+        </div>
       </div>
-    )
+    );
   }
 }
 
 export default ClassUser;
+
+// TODO: Life Cycle
+/**
+ * ---- Mounting ----
+ * Constructor (dummy)
+ * Render (dummy)
+ *    <HTML> (Dummy)
+ * Component Did Mount
+ *    <API Call>
+ *    <this.setState>
+ *
+ * ---- Update ----
+ *    render (with API data)
+ *    <HTML> (new API data)
+ *    component Did Update
+ *
+ * ---- Unmounting ----
+ *    Component Will Unmounting
+ */
