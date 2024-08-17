@@ -3,6 +3,7 @@ import Card from "./components/Card";
 import Shimmer from "./components/Shimmer";
 import Appbar from "./components/Appbar";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "./utils/useOnlineStatus";
 
 const App = () => {
   const [listOfData, setListOfData] = useState([]);
@@ -10,9 +11,13 @@ const App = () => {
   const [btnName, setBtnName] = useState("Apply Filter");
   const [isLoading, setIsLoading] = useState(true);
 
+  const onlineStatus = useOnlineStatus();
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (onlineStatus !== false) {
+      fetchData();
+    }
+  }, [onlineStatus]);
 
   const fetchData = async () => {
     try {
@@ -45,6 +50,14 @@ const App = () => {
 
   if (isLoading) {
     return <Shimmer />;
+  }
+
+  if (onlineStatus === false) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <h1 className="text-2xl text-yellow-500">You are offline!</h1>
+      </div>
+    );
   }
 
   return (
