@@ -36,12 +36,12 @@ class ClassUser extends React.Component {
 
     console.log("Child Constructor");
   }
-
+  
   // componentDidMount is used to make API call
-  async componentDidMount() {
+  async componentDidMount() {    
     console.log("Child Component Did Mount");
 
-    const data = await fetch("https://api.github.com/users/Tanish-Singhal");
+    const data = await fetch(import.meta.env.VITE_GITHUB_API);
     const json = await data.json();
 
     this.setState({
