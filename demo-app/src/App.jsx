@@ -4,6 +4,7 @@ import Shimmer from "./components/Shimmer";
 import Appbar from "./components/Appbar";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "./utils/useOnlineStatus";
+import { RatingBannerCard } from "./components/Card";
 
 const App = () => {
   const [listOfData, setListOfData] = useState([]);
@@ -12,6 +13,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const onlineStatus = useOnlineStatus();
+
+  const RatingCard = RatingBannerCard(Card);
 
   useEffect(() => {
     if (onlineStatus !== false) {
@@ -74,7 +77,11 @@ const App = () => {
       <div className="flex flex-wrap gap-4 p-4">
         {copyData.map((res) => (
           <Link key={res.info.id} to={"/restaurants/" + res.info.id}>
-            <Card resData={res} key={res.info.id} />
+            {res.info.avgRating > 4.5 ? (
+              <RatingCard resData={res} key={res.info.id} />
+            ) : (
+              <Card resData={res} key={res.info.id} />
+            )}
           </Link>
         ))}
       </div>
