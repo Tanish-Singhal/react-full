@@ -1,7 +1,8 @@
 import React from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import useRestaurantsMenu from "../utils/useRestaurantMenu"
+import useRestaurantsMenu from "../utils/useRestaurantMenu";
+import ResCategory from "./ResCategory";
 
 function RestaurantMenu() {
   const params = useParams();
@@ -13,32 +14,29 @@ function RestaurantMenu() {
   }
 
   const { name, avgRating, locality, city } = resInfo?.data?.cards[2]?.card?.card?.info || {};
-  const { itemCards } = resInfo?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card || [];
+  const categories = resInfo?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards || [];
+
+  const filterCategories = categories.filter(c =>
+    c.card?.card?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+  );
 
   return (
-    <div>
-      <h1>
+    <div className="flex justify-center items-center flex-col">
+      <h1 className="text-3xl font-bold">
         {name}
         <span> (Rating: {avgRating})</span>
       </h1>
-      <h3>
+
+      <h3 className="text-xl font-semibold">
         {locality}, {city}
       </h3>
       <br />
-      <h2>Menu</h2>
-      <ul class="list-none p-10 space-y-4">
-        {itemCards.map((item) => (
-          <li key={item.card.info.id} class="border p-4 rounded-lg shadow-sm">
-            <div class="flex justify-between items-center">
-              <span class="text-lg font-medium">{item.card.info.name}</span>
-              <span class="text-lg">
-                Rs.
-                {item.card.info.price / 100 || item.card.info.defaultPrice / 100}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ul>
+      
+      <h2 className="text-lg font-semibold">Menu</h2>
+
+      {filterCategories.map((category) => (
+        <ResCategory key={category.card?.card?.title} data={category.card?.card} />
+      ))}
     </div>
   );
 }
