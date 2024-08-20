@@ -5,12 +5,14 @@ import Appbar from "./components/Appbar";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "./utils/useOnlineStatus";
 import { RatingBannerCard } from "./components/Card";
+import UserContext from "./utils/UserContext";
 
 const App = () => {
   const [listOfData, setListOfData] = useState([]);
   const [copyData, setCopyData] = useState([]);
   const [btnName, setBtnName] = useState("Apply Filter");
   const [isLoading, setIsLoading] = useState(true);
+  const [username, setUsername] = useState();
 
   const onlineStatus = useOnlineStatus();
 
@@ -51,6 +53,13 @@ const App = () => {
     }
   };
 
+  useEffect(() => {
+    const data = {
+      name: "John Doe",
+    };
+    setUsername(data.name);
+  }, []);
+
   if (isLoading) {
     return <Shimmer />;
   }
@@ -64,28 +73,30 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <Appbar wholeData={listOfData} setWholeData={setCopyData} />
+    <UserContext.Provider value={{ loggedInUser: username, setUsername }}>
+      <div className="App">
+        <Appbar wholeData={listOfData} setWholeData={setCopyData} />
 
-      <button
-        onClick={handleFilterLogic}
-        className="m-2 p-2 bg-blue-500 text-white rounded"
-      >
-        {btnName}
-      </button>
+        <button
+          onClick={handleFilterLogic}
+          className="m-2 p-2 bg-blue-500 text-white rounded"
+        >
+          {btnName}
+        </button>
 
-      <div className="flex flex-wrap gap-4 p-4">
-        {copyData.map((res) => (
-          <Link key={res.info.id} to={"/restaurants/" + res.info.id}>
-            {res.info.avgRating > 4.5 ? (
-              <RatingCard resData={res} key={res.info.id} />
-            ) : (
-              <Card resData={res} key={res.info.id} />
-            )}
-          </Link>
-        ))}
+        <div className="flex flex-wrap gap-4 p-4">
+          {copyData.map((res) => (
+            <Link key={res.info.id} to={"/restaurants/" + res.info.id}>
+              {res.info.avgRating > 4.5 ? (
+                <RatingCard resData={res} key={res.info.id} />
+              ) : (
+                <Card resData={res} key={res.info.id} />
+              )}
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </UserContext.Provider>
   );
 };
 

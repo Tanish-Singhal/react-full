@@ -23,6 +23,7 @@
 */
 
 import React from "react";
+import UserContext from "../utils/UserContext";
 
 class ClassUser extends React.Component {
   constructor(props) {
@@ -36,9 +37,9 @@ class ClassUser extends React.Component {
 
     console.log("Child Constructor");
   }
-  
+
   // componentDidMount is used to make API call
-  async componentDidMount() {    
+  async componentDidMount() {
     console.log("Child Component Did Mount");
 
     const data = await fetch(import.meta.env.VITE_GITHUB_API);
@@ -64,8 +65,7 @@ class ClassUser extends React.Component {
       <div className="flex flex-col justify-center items-center border-2 border-lime-500 w-60 p-4">
         <div>
           Class Based Components
-          <br />
-          ({this.props.type}, {this.props.random})
+          <br />({this.props.type}, {this.props.random})
         </div>
 
         <div>
@@ -94,6 +94,15 @@ class ClassUser extends React.Component {
             className="mb-2"
           />
           <h1>{this.state.userInfo.name}</h1>
+        </div>
+
+        <div>
+          LoggedIn User:
+          <UserContext.Consumer>
+            {({ loggedInUser }) => (
+              <h1 className="text-yellow-400">{loggedInUser}</h1>
+            )}
+          </UserContext.Consumer>
         </div>
       </div>
     );

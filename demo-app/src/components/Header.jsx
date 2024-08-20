@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 function Header() {
   const onlineStatus = useOnlineStatus();
+  const { loggedInUser } = useContext(UserContext);
 
   return (
     <div className="border p-2 flex justify-evenly items-center">
       <ul className="flex gap-8">
-        <li>
-          Online Status: {onlineStatus ? "🟢" : "🔴"}
-        </li>
+        <li>Online Status: {onlineStatus ? "🟢" : "🔴"}</li>
         <li>
           <Link to="/">Home</Link>
         </li>
@@ -20,6 +20,7 @@ function Header() {
         <li>
           <Link to="/grocery">Grocery</Link>
         </li>
+        <li>{loggedInUser}</li>
       </ul>
     </div>
   );

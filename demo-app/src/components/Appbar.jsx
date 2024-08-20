@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import UserContext from "../utils/UserContext";
 
 const Appbar = ({ wholeData, setWholeData }) => {
   const [isloggedIn, setIsloggedIn] = useState(false);
@@ -10,6 +11,8 @@ const Appbar = ({ wholeData, setWholeData }) => {
     );
     setWholeData(filteredData);
   };
+
+  const { setUsername, loggedInUser } = useContext(UserContext);
 
   return (
     <div className="border p-2 flex justify-evenly items-center">
@@ -31,6 +34,16 @@ const Appbar = ({ wholeData, setWholeData }) => {
       >
         {isloggedIn ? "Logout" : "Login"}
       </button>
+
+      <div>
+        <label>Username: </label>
+        <input
+          className="text-white"
+          type="text"
+          onChange={(e) => setUsername(e.target.value)}
+          value={loggedInUser}
+        />
+      </div>  
     </div>
   );
 };
