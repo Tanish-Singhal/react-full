@@ -7,6 +7,9 @@ import Layout from "./Layout.jsx";
 import About from "./components/About.jsx";
 import Error from "./components/Error.jsx";
 import Shimmer from "./components/Shimmer.jsx";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore.jsx";
+import Cart from "./components/Cart.jsx";
 
 // If the app got very big, then lazy loading is the best option to load the components on demand.
 // it don't make the app slow and don't shove all the js logic into the single js file.
@@ -43,11 +46,17 @@ const appRouter = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
     ],
     errorElement: <Error />,
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={appRouter} />
+  <Provider store={appStore}>
+    <RouterProvider router={appRouter} />
+  </Provider>
 );
